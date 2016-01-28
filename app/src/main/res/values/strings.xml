@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Talk A Word</string>
+    <string name="action_about">About</string>
+    <string name="fileContentTxt">File should contains one word per line</string>
+    <string name="selectFileTxt">Select a file</string>
+    <string name="talkNextBtnTxt">Talk Next Word</string>
+    <string name="talkPrevBtnTxt">Talk Previous Word</string>
+    <string name="talkRandomTxt">Talk Random Word</string>
+    <string name="talkRepeatTxt">Talk Again</string>
+    <string name="yourWordTxt">Your word</string>
+
+</resources>
