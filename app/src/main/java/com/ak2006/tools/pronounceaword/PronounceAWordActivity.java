@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -15,6 +16,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
@@ -26,10 +28,16 @@ public class PronounceAWordActivity extends Activity implements View.OnClickList
     private Button talkNextWordBtn;
     private Button talkRndWordBtn;
     private Button talkRepeatWordBtn;
+    private Button verifyBtn;
     private TextView wordTxt;
     private TextView selectedFile;
     private TextView status;
+    private EditText enteredTxt;
+
     private TextToSpeech textToSpeech;
+
+
+
     private List<String> words;
     private int wordIndex;
     private int lastWordIndex;
@@ -42,19 +50,23 @@ public class PronounceAWordActivity extends Activity implements View.OnClickList
         textToSpeech = new TextToSpeech(this, this);
 
         selectAFileBtn = (Button)findViewById(R.id.selectFileBtn);
-         talkNextWordBtn = (Button)findViewById(R.id.talkNextBtn);
+        talkNextWordBtn = (Button)findViewById(R.id.talkNextBtn);
         talkRndWordBtn = (Button)findViewById(R.id.talkRandomBtn);
         talkRepeatWordBtn = (Button)findViewById(R.id.talkRepeatBtn);
+        verifyBtn = (Button)findViewById(R.id.verifyBtn);
+
         wordTxt = (TextView)findViewById(R.id.yourWordTxt);
         selectedFile = (TextView)findViewById(R.id.selectedFile);
         status = (TextView)findViewById(R.id.status);
+        enteredTxt = (EditText)findViewById(R.id.typedWord);
 
         selectAFileBtn.setOnClickListener(this);
         talkNextWordBtn.setOnClickListener(this);
         talkRndWordBtn.setOnClickListener(this);
         talkRepeatWordBtn.setOnClickListener(this);
+        verifyBtn.setOnClickListener(this);
 
-       enableButtons(false);
+        enableButtons(false);
     }
 
 
@@ -99,7 +111,21 @@ public class PronounceAWordActivity extends Activity implements View.OnClickList
         talk(getRandomWordIndex());
     }else if(v.getId() == R.id.talkRepeatBtn){
         talk(lastWordIndex);
+    }else if(v.getId() == R.id.verifyBtn){
+        verify();
     }
+    }
+
+    private void verify() {
+        String word = words.get(lastWordIndex);
+        String entered = enteredTxt.getText().toString();
+        if(word.equalsIgnoreCase(entered)){
+            textToSpeech.speak("Correct", TextToSpeech.QUEUE_FLUSH, null);
+
+        } else {
+            wordTxt.setText(word);
+            textToSpeech.speak("Wrong", TextToSpeech.QUEUE_FLUSH, null);
+        }
     }
 
     private int getRandomWordIndex() {
@@ -127,7 +153,6 @@ public class PronounceAWordActivity extends Activity implements View.OnClickList
     private void talk(int wordIndex){
         String word = words.get(wordIndex);
         lastWordIndex = wordIndex;
-        wordTxt.setText(word);
         status.setText(String.format("Showing %d/%d",(wordIndex+1),words.size()));
         textToSpeech.speak(word, TextToSpeech.QUEUE_FLUSH, null);
     }
@@ -166,12 +191,18 @@ public class PronounceAWordActivity extends Activity implements View.OnClickList
         talkNextWordBtn.setEnabled(flag);
         talkRndWordBtn.setEnabled(flag);
         talkRepeatWordBtn.setEnabled(flag);
+        verifyBtn.setEnabled(flag);
+
+        enteredTxt.setEnabled(flag);
     }
 
     public boolean isValidText(String line) {
         char[] chars = line.toCharArray();
 
+        StringBuffer b = new StringBuffer();
+
         for (char c : chars) {
+            b.append(c);
              if(!(c >= ' ' && c<='z')) {
                 return false;
             }
@@ -191,7 +222,8 @@ public class PronounceAWordActivity extends Activity implements View.OnClickList
                     words.clear();
                     return;
                 }
-                words.add(line);
+                String[] dic = line.split("\\W+");
+                words.addAll(Arrays.asList(dic));
             }
             wordIndex = 0;
          }catch(Exception e){

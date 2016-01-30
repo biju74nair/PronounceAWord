@@ -56,7 +56,24 @@
                         android:textStyle="bold"
                         android:typeface="serif"
                         android:layout_below="@+id/talkRepeatBtn" />
-    <TextView
+
+
+                <EditText
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:hint="@string/enterYourWord"
+                    android:id="@+id/typedWord"
+                    android:layout_below="@+id/status"/>
+
+                <Button
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/verifyBtn"
+                    android:text="@string/verify"
+                    android:layout_below="@+id/typedWord" />
+
+                 <TextView
                     android:id="@+id/yourWordTxt"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
@@ -64,6 +81,9 @@
                     android:textStyle="bold"
                     android:typeface="serif"
                     android:textColor="#0000CD"
-                      android:layout_below="@+id/status"
+                      android:layout_below="@+id/verifyBtn"
                       android:layout_alignParentBottom="true" />
-  </RelativeLayout>
+
+
+
+</RelativeLayout>

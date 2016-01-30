@@ -10,5 +10,6 @@
     <string name="talkRandomTxt">Talk Random Word</string>
     <string name="talkRepeatTxt">Talk Again</string>
     <string name="yourWordTxt">Your word</string>
-
+    <string name="enterYourWord">Enter your word here</string>
+    <string name="verify">Verify</string>
 </resources>
